@@ -1,85 +1,196 @@
-// Ensure script runs only after the DOM is fully loaded
-document.addEventListener("DOMContentLoaded", () => {
-    console.log("Search script loaded!");
+/**
+ * Initialize the search functionality
+ */
+export function initSearch() {
+  const searchInput = document.getElementById('search-input');
+  const searchBtn = document.getElementById('search-btn');
+  const resetBtn = document.getElementById('reset-btn');
+  const resultsContainer = document.getElementById('results-container');
+  
+  if (searchInput && searchBtn && resetBtn && resultsContainer) {
+    // Load all recommendations on page load
+    loadAllRecommendations();
+    
+    // Search button click event
+    searchBtn.addEventListener('click', () => {
+      performSearch(searchInput.value);
+    });
+    
+    // Enter key press event
+    searchInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        performSearch(searchInput.value);
+      }
+    });
+    
+    // Reset button click event
+    resetBtn.addEventListener('click', () => {
+      // Clear the search input
+      searchInput.value = '';
+      // Clear the results container
+      resultsContainer.innerHTML = '';
+      // Load all recommendations again
+      loadAllRecommendations();
+    });
+  }
 
-    // Assign event listener to the search button
-    document.getElementById("search").addEventListener("keypress", function(event) {
-        if (event.key === "Enter") {
-            event.preventDefault();
-            search();
+  /**
+   * Load all recommendations without filtering
+   */
+  async function loadAllRecommendations() {
+    try {
+      const response = await fetch('data/travel_recommendation_api.json');
+      const data = await response.json();
+      
+      // Combine all destinations
+      const results = [
+        ...data.countries.flatMap(country => country.cities),
+        ...data.temples,
+        ...data.beaches
+      ];
+      
+      // Display all results
+      displayResults(results);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      resultsContainer.innerHTML = '<p class="error">Error loading results. Please try again later.</p>';
+    }
+  }
+  
+  /**
+   * Normalize search terms for consistent matching
+   * @param {string} term - The term to normalize
+   * @returns {string} - Normalized term
+   */
+  function normalizeSearchTerm(term) {
+    return term.toLowerCase()
+      .replace(/s$/, '') // Remove trailing 's' for plurals
+      .trim();
+  }
+
+  /**
+   * Check if a destination matches the search term
+   * @param {Object} destination - The destination to check
+   * @param {string} searchTerm - The normalized search term
+   * @returns {boolean} - Whether the destination matches
+   */
+  function matchesSearchTerm(destination, searchTerm) {
+    const normalizedName = normalizeSearchTerm(destination.name);
+    const normalizedDesc = normalizeSearchTerm(destination.description);
+    
+    // Check if the search term is a type of destination
+    const isTypeMatch = 
+      (searchTerm === 'beach' && destination.name.toLowerCase().includes('beach')) ||
+      (searchTerm === 'temple' && destination.name.toLowerCase().includes('temple')) ||
+      (searchTerm === 'city' && destination.name.toLowerCase().includes('city'));
+
+    return normalizedName.includes(searchTerm) || 
+           normalizedDesc.includes(searchTerm) ||
+           isTypeMatch;
+  }
+  
+  /**
+   * Perform search based on keyword
+   * @param {string} keyword - The search keyword
+   */
+  async function performSearch(keyword) {
+    if (!keyword.trim()) {
+      loadAllRecommendations();
+      return;
+    }
+    
+    try {
+      // Fetch data from the API
+      const response = await fetch('data/travel_recommendation_api.json');
+      const data = await response.json();
+      
+      // Normalize the search term
+      const searchTerm = normalizeSearchTerm(keyword);
+      
+      // Initialize results array
+      let results = [];
+      
+      // Search in countries and cities
+      data.countries.forEach(country => {
+        if (normalizeSearchTerm(country.name).includes(searchTerm)) {
+          results.push(...country.cities);
         }
-    });
-
-    document.querySelector(".search-container button").addEventListener("click", search);
-});
-
-// Static travel recommendation data (avoiding external fetch issues)
-const travelData = {
-    beaches: [
-        { name: "Maldives", description: "White sandy beaches & crystal-clear water.", imageUrl: "https://source.unsplash.com/400x300/?beach" },
-        { name: "Bali, Indonesia", description: "Tropical paradise with stunning coastline.", imageUrl: "https://source.unsplash.com/400x300/?bali" }
-    ],
-    temples: [
-        { name: "Angkor Wat, Cambodia", description: "Largest temple complex in the world.", imageUrl: "https://source.unsplash.com/400x300/?temple" },
-        { name: "Fushimi Inari, Japan", description: "Iconic red torii gates.", imageUrl: "https://source.unsplash.com/400x300/?japan" }
-    ],
-    cities: [
-        { name: "Rome, Italy", description: "Historical landmarks & vibrant culture.", imageUrl: "https://source.unsplash.com/400x300/?rome" },
-        { name: "Tokyo, Japan", description: "A perfect blend of tradition & technology.", imageUrl: "https://source.unsplash.com/400x300/?tokyo" }
-    ]
-};
-
-// Search function to filter results based on input
-function search() {
-    let searchValue = document.getElementById("search").value.trim().toLowerCase();
-    if (!searchValue) {
-        alert("Please enter a keyword!");
-        return;
+        country.cities.forEach(city => {
+          if (matchesSearchTerm(city, searchTerm)) {
+            results.push(city);
+          }
+        });
+      });
+      
+      // Search in temples
+      data.temples.forEach(temple => {
+        if (matchesSearchTerm(temple, searchTerm)) {
+          results.push(temple);
+        }
+      });
+      
+      // Search in beaches
+      data.beaches.forEach(beach => {
+        if (matchesSearchTerm(beach, searchTerm)) {
+          results.push(beach);
+        }
+      });
+      
+      // Remove duplicates
+      results = Array.from(new Set(results.map(JSON.stringify))).map(JSON.parse);
+      
+      // Display results
+      displayResults(results);
+      
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      resultsContainer.innerHTML = '<p class="error">Error loading results. Please try again later.</p>';
     }
-
-    let results = [];
-
-    if (matchesKeyword(searchValue, "beach")) {
-        results = travelData.beaches.slice(0, 2);
-    } else if (matchesKeyword(searchValue, "temple")) {
-        results = travelData.temples.slice(0, 2);
-    } else {
-        results = travelData.cities.filter(city => matchesKeyword(searchValue, city.name)).slice(0, 2);
-    }
-
+  }
+  
+  /**
+   * Display search results
+   * @param {Array} results - The filtered search results
+   */
+  function displayResults(results) {
+    // Clear previous results
+    resultsContainer.innerHTML = '';
+    
     if (results.length === 0) {
-        alert("No matching results found!");
-    } else {
-        displayResults(results);
+      resultsContainer.innerHTML = '<p class="no-results">No results found. Try a different search term.</p>';
+      resultsContainer.style.color ='black';
+      resultsContainer.style.fontWeight ='bold';
+      resultsContainer.style.fontSize = '1rem';
+      return;
     }
-}
-
-// Function to check keyword match
-function matchesKeyword(input, target) {
-    return target.toLowerCase().includes(input) || input.includes(target.toLowerCase());
-}
-
-// Display search results dynamically
-function displayResults(results) {
-    const container = document.getElementById("recommendation-results");
-    container.innerHTML = "";
-
-    results.forEach(item => {
-        let card = document.createElement("div");
-        card.classList.add("recommendation-card");
-
-        card.innerHTML = `
-            <img src="${item.imageUrl}" alt="${item.name}">
-            <h3>${item.name}</h3>
-            <p>${item.description}</p>
-        `;
-
-        container.appendChild(card);
+    
+    // Create and append result cards
+    results.forEach(result => {
+      const resultCard = document.createElement('div');
+      resultCard.className = 'result-card';
+      resultCard.innerHTML = `
+        <div class="result-image">
+          <img src="${result.imageUrl}" alt="${result.name}" loading="lazy">
+        </div>
+        <div class="result-content">
+          <h3>${result.name}</h3>
+          <p>${result.description}</p>
+        </div>
+        <div class="result-footer">
+          <span>${result.name.split(',')[1]?.trim() || ''}</span>
+          <a href="#" class="visit-btn">Visit</a>
+        </div>
+      `;
+      
+      resultsContainer.appendChild(resultCard);
+      
+      // Add fade-in animation
+      setTimeout(() => {
+        resultCard.style.opacity = '1';
+      }, 100 * results.indexOf(result));
     });
-}
-
-// Reset search results
-function resetSearch() {
-    document.getElementById("search").value = "";
-    document.getElementById("recommendation-results").innerHTML = "";
+    
+    // Scroll to results
+    //resultsContainer.scrollIntoView({ behavior: 'smooth' });
+  }
 }
