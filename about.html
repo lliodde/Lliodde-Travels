@@ -1,24 +1,117 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About Us | Lliodde Travels</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About Us - Lliodde Travels</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="about.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
 </head>
-    <script>
-        console.log("Inline JavaScript is running!");
-    </script>
-<script defer src="script.js"></script>
 <body>
-    <nav>
-        <a href="index.html">Home</a>
-        <a href="contact.html">Contact Us</a>
+  <header>
+    <nav class="navbar">
+      <div class="logo">
+        <a href="index.html"><i class="fa-solid fa-plane logoicon"></i></a>
+        <a href="index.html"><h1>Lliodde Travels</h1></a>
+      </div>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html" class="active">About Us</a></li>
+        <li><a href="contact.html">Contact Us</a></li>
+      </ul>
     </nav>
+  </header>
 
-    <section id="about">
-        <h1>About Us</h1>
-        <p>Our mission is to create unique travel experiences tailored to every explorer.</p>
+  <main>
+    <section class="about-hero">
+      <div class="about-hero-content">
+        <h1>About Lliodde Travels</h1>
+        <p>Crafting unforgettable journeys for adventurers worldwide</p>
+      </div>
     </section>
+
+    <section class="about-info">
+      <div class="container">
+        <h2>Our Story</h2>
+        <p>
+          Lliodde Travels was founded with a vision: to provide **personalized, enriching travel experiences** that empower explorers. What began as a passion project has now evolved into a **premier travel consultancy and recommendation platform**, offering insights and expertise to adventurers around the globe.
+        </p>
+        <p>
+          We believe that **travel is more than sightseeing—it’s an opportunity to connect, learn, and embrace cultures**. Our recommendations are carefully curated, ensuring each journey is filled with **authentic experiences** and **unmatched hospitality**.
+        </p>
+        <p>
+          From hidden gems to iconic landmarks, **every destination we showcase undergoes a rigorous review**, ensuring high-quality, ethical, and immersive travel experiences. **Your next adventure starts here.**
+        </p>
+      </div>
+    </section>
+
+    <section class="team-section">
+      <div class="container">
+        <h2>Meet Our Team</h2>
+        <div class="team-grid">
+          <div class="team-member">
+            <div class="member-image">
+              <img width="940px" height="650px" src="./images/3.jpg" alt="Fernando Gapuz" />
+            </div>
+            <h3>Fernando Gapuz</h3>
+            <p class="member-title">Founder & Travel Visionary</p>
+            <p>A strategic leader who combines technical expertise with a passion for ethical travel experiences, Fernando ensures Lliodde Travels is built on integrity and adventure.</p>
+          </div>
+
+          <div class="team-member">
+            <div class="member-image">
+              <img width="940px" height="650px" src="./images/1.jpeg" alt="Julia Fernandez" />
+            </div>
+            <h3>Julia Fernandez</h3>
+            <p class="member-title">Travel Consultant & Cultural Guide</p>
+            <p>With a deep love for history and diverse cultures, Julia curates travel recommendations that enrich every explorer’s journey.</p>
+          </div>
+
+          <div class="team-member">
+            <div class="member-image">
+              <img width="940px" height="650px" src="./images/4.jpg" alt="Marco Rivera" />
+            </div>
+            <h3>Marco Rivera</h3>
+            <p class="member-title">Adventure Specialist</p>
+            <p>From mountain treks to coastal escapes, Marco brings expert insights to travelers seeking adrenaline-packed adventures.</p>
+          </div>
+
+          <div class="team-member">
+            <div class="member-image">
+              <img width="940px" height="650px" src="./images/2.jpg" alt="Sophia Chen" />
+            </div>
+            <h3>Sophia Chen</h3>
+            <p class="member-title">Sustainable Travel Advocate</p>
+            <p>A champion for eco-conscious tourism, Sophia ensures Lliodde Travels prioritizes responsible travel recommendations.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-content">
+      <div class="footer-logo">
+        <a href="index.html"><i class="fa-solid fa-plane footer-icon"></i></a>
+        <a href="index.html"><h2>Lliodde Travels</h2></a>
+      </div>
+      <div class="footer-links">
+        <div class="footer-column">
+          <h3>Quick Links</h3>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="contact.html">Contact Us</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2025 Lliodde Travels. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script type="module" src="about.js"></script>
 </body>
 </html>
