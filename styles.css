@@ -1,0 +1,194 @@
+/* Global Styles */
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    background: #f4f4f4;
+}
+
+/* Navigation Bar */
+nav {
+    background: linear-gradient(135deg, #004080, #0073e6);
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.logo {
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    margin: 0 15px;
+    font-size: 18px;
+    transition: color 0.3s ease-in-out;
+}
+
+.nav-links a:hover {
+    color: #ffcc00;
+}
+
+/* Search Bar */
+.search-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.search-container input {
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    width: 180px;
+}
+
+.search-container button {
+    background: #ffcc00;
+    border: none;
+    padding: 8px 12px;
+    cursor: pointer;
+    font-weight: bold;
+    border-radius: 5px;
+    transition: background 0.3s ease-in-out;
+}
+
+.search-container button:hover {
+    background: #ffaa00;
+}
+
+/* Hero Section */
+header {
+    background: url('images/your_background_image.jpg') no-repeat center center/cover;
+    height: 90vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: white;
+}
+
+.overlay {
+    background: rgba(0, 0, 0, 0.6);
+    padding: 20px;
+    border-radius: 10px;
+}
+
+h1 {
+    font-size: 50px;
+}
+
+.book-now {
+    background-color: #ffcc00;
+    padding: 12px 20px;
+    border: none;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
+}
+
+.book-now:hover {
+    background-color: #ffaa00;
+}
+
+/* Recommendation Cards */
+#recommendation-results {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 20px;
+}
+
+.recommendation-card {
+    border: 1px solid #ddd;
+    padding: 15px;
+    margin: 15px;
+    text-align: center;
+    background: white;
+    box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.2);
+    width: 250px;
+    border-radius: 10px;
+    transition: transform 0.3s ease-in-out;
+}
+
+.recommendation-card img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.recommendation-card:hover {
+    transform: scale(1.05);
+}
+
+/* About & Contact Sections */
+#about, #contact {
+    padding: 50px;
+    background: white;
+    margin: 40px auto;
+    border-radius: 8px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    width: 80%;
+}
+
+#about h1, #contact h1 {
+    color: #004080;
+}
+
+/* Footer */
+footer {
+    background: #222;
+    padding: 15px;
+    text-align: center;
+    color: white;
+}
+
+.social-icons a {
+    color: white;
+    margin: 10px;
+    text-decoration: none;
+    font-size: 20px;
+    transition: color 0.3s ease-in-out;
+}
+
+.social-icons a:hover {
+    color: #ffcc00;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    nav {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .nav-links {
+        display: flex;
+        flex-direction: column;
+        margin-top: 10px;
+    }
+
+    .nav-links a {
+        margin: 5px 0;
+    }
+
+    header {
+        height: 60vh;
+    }
+
+    #about, #contact {
+        width: 90%;
+    }
+}
