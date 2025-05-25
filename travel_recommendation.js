@@ -1,23 +1,22 @@
 document.addEventListener("DOMContentLoaded", () => {
-    fetch("travel_recommendation_api.json")
-        .then(response => response.json())
-        .then(data => {
-            console.log("Travel Recommendation Data:", data); // Debugging
-            window.travelData = data; // Store API data globally for search function
-        })
-        .catch(error => console.error("Error fetching data:", error));
-});
-
-function getLocalTime(timeZone) {
-    const options = { 
-        timeZone: timeZone, 
-        hour12: true, 
-        hour: 'numeric', 
-        minute: 'numeric', 
-        second: 'numeric' 
+    // Static travel recommendation data to avoid GitHub Pages fetch issues
+    const travelData = {
+        beaches: [
+            { name: "Maldives", description: "White sandy beaches & crystal-clear water.", imageUrl: "https://source.unsplash.com/400x300/?beach" },
+            { name: "Bali, Indonesia", description: "Tropical paradise with stunning coastline.", imageUrl: "https://source.unsplash.com/400x300/?bali" }
+        ],
+        temples: [
+            { name: "Angkor Wat, Cambodia", description: "Largest temple complex in the world.", imageUrl: "https://source.unsplash.com/400x300/?temple" },
+            { name: "Fushimi Inari, Japan", description: "Iconic red torii gates.", imageUrl: "https://source.unsplash.com/400x300/?japan" }
+        ],
+        cities: [
+            { name: "Rome, Italy", description: "Historical landmarks & vibrant culture.", imageUrl: "https://source.unsplash.com/400x300/?rome" },
+            { name: "Tokyo, Japan", description: "A perfect blend of tradition & technology.", imageUrl: "https://source.unsplash.com/400x300/?tokyo" }
+        ]
     };
-    return new Date().toLocaleTimeString('en-US', options);
-}
+
+    window.travelData = travelData;
+});
 
 function search() {
     let searchValue = document.getElementById("search").value.trim().toLowerCase();
@@ -33,26 +32,7 @@ function search() {
     } else if (matchesKeyword(searchValue, "temple")) {
         results = travelData.temples.slice(0, 2);
     } else {
-        travelData.countries.forEach(country => {
-            if (matchesKeyword(searchValue, country.name)) {
-                results.push({ 
-                    name: country.name, 
-                    description: `Country: ${country.name}`, 
-                    imageUrl: "",
-                    time: getLocalTime(getTimeZone(country.name))
-                });
-            }
-            country.cities.forEach(city => {
-                if (matchesKeyword(searchValue, city.name)) {
-                    results.push({ 
-                        ...city, 
-                        time: getLocalTime(getTimeZone(country.name)) 
-                    });
-                }
-            });
-        });
-
-        results = results.slice(0, 2);
+        results = travelData.cities.filter(city => matchesKeyword(searchValue, city.name)).slice(0, 2);
     }
 
     if (results.length === 0) {
@@ -64,15 +44,6 @@ function search() {
 
 function matchesKeyword(input, target) {
     return target.toLowerCase().includes(input) || input.includes(target.toLowerCase());
-}
-
-function getTimeZone(countryName) {
-    const timeZones = {
-        "Australia": "Australia/Sydney",
-        "Japan": "Asia/Tokyo",
-        "Brazil": "America/Sao_Paulo"
-    };
-    return timeZones[countryName] || "UTC"; // Default to UTC if unknown
 }
 
 function displayResults(results) {
@@ -87,7 +58,6 @@ function displayResults(results) {
             <img src="${item.imageUrl}" alt="${item.name}">
             <h3>${item.name}</h3>
             <p>${item.description}</p>
-            <p><strong>Local Time:</strong> ${item.time || "Not available"}</p>
         `;
 
         container.appendChild(card);
