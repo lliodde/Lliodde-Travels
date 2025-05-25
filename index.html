@@ -43,7 +43,7 @@
 
         /* Hero Section */
         header {
-            background: url('your_background_image.jpg') no-repeat center center/cover;
+            background: url('images/your_background_image.jpg') no-repeat center center/cover;
             height: 90vh;
             display: flex;
             justify-content: center;
@@ -69,25 +69,30 @@
             cursor: pointer;
         }
 
-        /* Sections */
-        section {
-            padding: 40px;
+        /* Recommendation Results */
+        #recommendation-results {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .recommendation-card {
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin: 10px;
+            text-align: center;
             background: white;
-            margin: 20px;
-            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
+            box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+            width: 250px;
+            border-radius: 5px;
         }
 
-        #home {
-            background: #f0f8ff;
-        }
-
-        #about {
-            background: #e8f0ff;
-        }
-
-        #contact {
-            background: #f8e8e8;
+        .recommendation-card img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 5px;
         }
 
         /* Footer */
@@ -133,19 +138,6 @@
 
     <!-- Recommendation Results Section -->
     <section id="recommendation-results"></section>
-
-    <!-- About Us Section -->
-    <section id="about">
-        <h2>About Us</h2>
-        <p>Welcome to Lliodde Travels, where we help you explore breathtaking destinations with ease.</p>
-    </section>
-
-    <!-- Contact Us Section -->
-    <section id="contact">
-        <h2>Contact Us</h2>
-        <p>Email: info@lliodde.com</p>
-        <p>Phone: +123 456 7890</p>
-    </section>
 
     <footer>
         <div class="social-icons">
