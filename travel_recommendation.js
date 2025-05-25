@@ -1,3 +1,4 @@
+console.log("JavaScript file is running!");
 document.addEventListener("DOMContentLoaded", () => {
     // Static travel recommendation data to avoid GitHub Pages fetch issues
     const travelData = {
