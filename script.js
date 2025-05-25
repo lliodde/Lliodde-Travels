@@ -1,6 +1,23 @@
+// Check if JavaScript is running
 console.log("JavaScript file is running!");
+
+// Ensure DOM is fully loaded before executing scripts
 document.addEventListener("DOMContentLoaded", () => {
-    // Static travel recommendation data to avoid GitHub Pages fetch issues
+
+    // Smooth scrolling for navigation links
+    document.querySelectorAll(".nav-links a").forEach(link => {
+        link.addEventListener("click", event => {
+            event.preventDefault();
+            const targetId = link.getAttribute("href").substring(1);
+            const targetSection = document.getElementById(targetId);
+
+            if (targetSection) {
+                targetSection.scrollIntoView({ behavior: "smooth" });
+            }
+        });
+    });
+
+    // Static travel recommendation data
     const travelData = {
         beaches: [
             { name: "Maldives", description: "White sandy beaches & crystal-clear water.", imageUrl: "https://source.unsplash.com/400x300/?beach" },
@@ -16,21 +33,11 @@ document.addEventListener("DOMContentLoaded", () => {
         ]
     };
 
+    // Make travelData globally accessible
     window.travelData = travelData;
 });
 
-document.querySelectorAll('.nav-links a').forEach(link => {
-    link.addEventListener('click', event => {
-        event.preventDefault();
-        const targetId = link.getAttribute('href').substring(1);
-        const targetSection = document.getElementById(targetId);
-
-        if (targetSection) {
-            targetSection.scrollIntoView({ behavior: 'smooth' });
-        }
-    });
-});
-
+// Search function
 function search() {
     let searchValue = document.getElementById("search").value.trim().toLowerCase();
     if (!searchValue) {
@@ -55,10 +62,12 @@ function search() {
     }
 }
 
+// Function to match keywords
 function matchesKeyword(input, target) {
     return target.toLowerCase().includes(input) || input.includes(target.toLowerCase());
 }
 
+// Display search results
 function displayResults(results) {
     const container = document.getElementById("recommendation-results");
     container.innerHTML = "";
@@ -77,6 +86,7 @@ function displayResults(results) {
     });
 }
 
+// Reset search results
 function resetSearch() {
     document.getElementById("search").value = "";
     document.getElementById("recommendation-results").innerHTML = "";
